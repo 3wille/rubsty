@@ -27,7 +27,6 @@ jobs:
         rust-version: nightly
     - uses: actions/checkout@v1
 
-    - run: cargo build
     - run: cargo install cargo-tarpaulin
     - run: cargo tarpaulin --run-types Tests --out Xml
 
