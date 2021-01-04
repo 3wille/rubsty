@@ -1,3 +1,6 @@
+extern crate itertools;
+extern crate regex;
+
 use crate::version::{RubyVersion, VersionLevel, VersionMismatch};
 use itertools::Itertools;
 use regex::Regex;
