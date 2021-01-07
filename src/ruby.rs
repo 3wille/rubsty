@@ -133,19 +133,24 @@ where
     Ok(io::BufReader::new(file).lines())
 }
 
-#[test]
-fn test_with_same_versions() {
-    let paths = fs::read_dir("./fixtures/same_versions").unwrap();
-    let versions = parse_files_for_versions(paths);
-    let mismatches = build_version_mismatches(versions);
-    assert!(mismatches.is_empty());
-}
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-#[test]
-fn test_with_different_version() {
-    let paths = fs::read_dir("./fixtures/different_versions").unwrap();
-    let versions = parse_files_for_versions(paths);
-    let mismatches = build_version_mismatches(versions);
-    println!("{}", mismatches.len());
-    assert!(mismatches.len() == 1);
+    #[test]
+    fn test_with_same_versions() {
+        let paths = fs::read_dir("./fixtures/same_versions").unwrap();
+        let versions = parse_files_for_versions(paths);
+        let mismatches = build_version_mismatches(versions);
+        assert!(mismatches.is_empty());
+    }
+
+    #[test]
+    fn test_with_different_version() {
+        let paths = fs::read_dir("./fixtures/different_versions").unwrap();
+        let versions = parse_files_for_versions(paths);
+        let mismatches = build_version_mismatches(versions);
+        println!("{}", mismatches.len());
+        assert!(mismatches.len() == 1);
+    }
 }

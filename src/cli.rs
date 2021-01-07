@@ -88,40 +88,45 @@ fn print_mismatches(mismatches: &Vec<VersionMismatch>) {
     }
 }
 
-#[test]
-fn test_default_command() {
-    let opts = Opts {
-        path: String::from("fixtures/different_versions"),
-        subcmd: None,
-    };
-    execute_cli(opts);
-}
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-#[test]
-fn test_default_command_without_mismatches() {
-    let opts = Opts {
-        path: String::from("fixtures/same_versions"),
-        subcmd: None,
-    };
-    execute_cli(opts);
-}
+    #[test]
+    fn test_default_command() {
+        let opts = Opts {
+            path: String::from("fixtures/different_versions"),
+            subcmd: None,
+        };
+        execute_cli(opts);
+    }
 
-#[test]
-fn test_print_command() {
-    let opts = Opts {
-        path: String::from("fixtures/different_versions"),
-        subcmd: Some(SubCommand::Print(Print {})),
-    };
-    execute_cli(opts);
-}
+    #[test]
+    fn test_default_command_without_mismatches() {
+        let opts = Opts {
+            path: String::from("fixtures/same_versions"),
+            subcmd: None,
+        };
+        execute_cli(opts);
+    }
 
-#[test]
-fn test_check_command() {
-    let opts = Opts {
-        path: String::from("fixtures/different_versions"),
-        subcmd: Some(SubCommand::Check(Check {
-            mismatch_returncode: 0,
-        })),
-    };
-    execute_cli(opts);
+    #[test]
+    fn test_print_command() {
+        let opts = Opts {
+            path: String::from("fixtures/different_versions"),
+            subcmd: Some(SubCommand::Print(Print {})),
+        };
+        execute_cli(opts);
+    }
+
+    #[test]
+    fn test_check_command() {
+        let opts = Opts {
+            path: String::from("fixtures/different_versions"),
+            subcmd: Some(SubCommand::Check(Check {
+                mismatch_returncode: 0,
+            })),
+        };
+        execute_cli(opts);
+    }
 }

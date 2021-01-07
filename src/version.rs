@@ -58,38 +58,43 @@ impl std::fmt::Display for RubyVersion {
     }
 }
 
-#[test]
-fn test_rubyversion_minor_display_impl() {
-    let version = RubyVersion {
-        major: String::from("1"),
-        minor: String::from("2"),
-        teeny: None,
-        patch: None,
-        found_in_file: String::from("a"),
-    };
-    assert_eq!(format!("{}", version), "1.2")
-}
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-#[test]
-fn test_rubyversion_teeny_display_impl() {
-    let version = RubyVersion {
-        major: String::from("1"),
-        minor: String::from("2"),
-        teeny: Some(String::from("3")),
-        patch: None,
-        found_in_file: String::from("a"),
-    };
-    assert_eq!(format!("{}", version), "1.2.3")
-}
+    #[test]
+    fn test_rubyversion_minor_display_impl() {
+        let version = RubyVersion {
+            major: String::from("1"),
+            minor: String::from("2"),
+            teeny: None,
+            patch: None,
+            found_in_file: String::from("a"),
+        };
+        assert_eq!(format!("{}", version), "1.2")
+    }
 
-#[test]
-fn test_rubyversion_patch_display_impl() {
-    let version = RubyVersion {
-        major: String::from("1"),
-        minor: String::from("2"),
-        teeny: Some(String::from("3")),
-        patch: Some(String::from("4")),
-        found_in_file: String::from("a"),
-    };
-    assert_eq!(format!("{}", version), "1.2.3-p4")
+    #[test]
+    fn test_rubyversion_teeny_display_impl() {
+        let version = RubyVersion {
+            major: String::from("1"),
+            minor: String::from("2"),
+            teeny: Some(String::from("3")),
+            patch: None,
+            found_in_file: String::from("a"),
+        };
+        assert_eq!(format!("{}", version), "1.2.3")
+    }
+
+    #[test]
+    fn test_rubyversion_patch_display_impl() {
+        let version = RubyVersion {
+            major: String::from("1"),
+            minor: String::from("2"),
+            teeny: Some(String::from("3")),
+            patch: Some(String::from("4")),
+            found_in_file: String::from("a"),
+        };
+        assert_eq!(format!("{}", version), "1.2.3-p4")
+    }
 }
