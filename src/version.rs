@@ -3,7 +3,7 @@ pub struct VersionMismatch {
     pub versions: Vec<RubyVersion>,
 }
 
-#[derive(strum_macros::ToString, Debug, Clone)]
+#[derive(strum_macros::ToString, Debug, Clone, PartialEq, Eq)]
 pub enum VersionLevel {
     Major,
     Minor,
@@ -21,6 +21,26 @@ pub struct RubyVersion {
 }
 
 impl RubyVersion {
+    pub const VERSION_LEVELS: [VersionLevel; 4] = [
+        VersionLevel::Major,
+        VersionLevel::Minor,
+        VersionLevel::Teeny,
+        VersionLevel::Patch,
+    ];
+
+    pub fn on_level(&self, level: VersionLevel) -> Option<String> {
+        if level == VersionLevel::Major {
+            return Some(self.major.clone());
+        } else if level == VersionLevel::Minor {
+            return Some(self.minor.clone());
+        } else if level == VersionLevel::Teeny {
+            return self.teeny.clone();
+        } else if level == VersionLevel::Patch {
+            return self.patch.clone();
+        }
+        None
+    }
+
     pub fn print(&self) {
         println!("Detected {} in {}", self, self.found_in_file)
     }
@@ -96,5 +116,31 @@ mod tests {
             found_in_file: String::from("a"),
         };
         assert_eq!(format!("{}", version), "1.2.3-p4")
+    }
+    #[test]
+    fn test_rubyversion_on_level() {
+        let version = RubyVersion {
+            major: String::from("1"),
+            minor: String::from("2"),
+            teeny: Some(String::from("3")),
+            patch: Some(String::from("4")),
+            found_in_file: String::from("a"),
+        };
+        assert_eq!(
+            version.on_level(VersionLevel::Major),
+            Some(String::from("1"))
+        );
+        assert_eq!(
+            version.on_level(VersionLevel::Minor),
+            Some(String::from("2"))
+        );
+        assert_eq!(
+            version.on_level(VersionLevel::Teeny),
+            Some(String::from("3"))
+        );
+        assert_eq!(
+            version.on_level(VersionLevel::Patch),
+            Some(String::from("4"))
+        );
     }
 }

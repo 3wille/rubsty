@@ -32,33 +32,16 @@ fn compare_two_versions(
     left_version: RubyVersion,
     right_version: RubyVersion,
 ) -> Option<VersionMismatch> {
-    if left_version.major != right_version.major {
-        let mismatch = VersionMismatch {
-            level: VersionLevel::Major,
-            versions: vec![left_version, right_version],
-        };
-        Some(mismatch)
-    } else if left_version.minor != right_version.minor {
-        let mismatch = VersionMismatch {
-            level: VersionLevel::Minor,
-            versions: vec![left_version, right_version],
-        };
-        Some(mismatch)
-    } else if left_version.teeny != right_version.teeny {
-        let mismatch = VersionMismatch {
-            level: VersionLevel::Teeny,
-            versions: vec![left_version, right_version],
-        };
-        Some(mismatch)
-    } else if left_version.patch != right_version.patch {
-        let mismatch = VersionMismatch {
-            level: VersionLevel::Patch,
-            versions: vec![left_version, right_version],
-        };
-        Some(mismatch)
-    } else {
-        None
+    for level in RubyVersion::VERSION_LEVELS.iter() {
+        if left_version.on_level(level.clone()) != right_version.on_level(level.clone()) {
+            let mismatch = VersionMismatch {
+                level: level.clone(),
+                versions: vec![left_version, right_version],
+            };
+            return Some(mismatch);
+        }
     }
+    None
 }
 
 fn parse_files_for_versions(paths: fs::ReadDir) -> Vec<RubyVersion> {
