@@ -28,7 +28,7 @@ jobs:
     - uses: actions/checkout@v1
 
     - run: cargo install cargo-tarpaulin
-    - run: cargo tarpaulin --run-types Tests --out Xml
+    - run: cargo tarpaulin --tests --out Xml
 
     - uses: codecov/codecov-action@v1
       with:

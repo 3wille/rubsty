@@ -9,8 +9,8 @@ use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
 
-pub fn detect_version_mismatches() -> Vec<VersionMismatch> {
-    let paths = fs::read_dir("./fixtures/different_versions").unwrap();
+pub fn detect_version_mismatches(path: String) -> Vec<VersionMismatch> {
+    let paths = fs::read_dir(path).unwrap();
     let versions = parse_files_for_versions(paths);
     let mismatches = build_version_mismatches(versions);
     mismatches
@@ -67,7 +67,6 @@ fn parse_files_for_versions(paths: fs::ReadDir) -> Vec<RubyVersion> {
         let path = path.unwrap();
         let filename = path.file_name().into_string().unwrap();
         let filepath = path.path().display().to_string();
-        // let detected_versions = Vec<RubyVersion>
         match filename.as_str() {
             ".ruby-version" => {
                 println!("Found .ruby-version");
